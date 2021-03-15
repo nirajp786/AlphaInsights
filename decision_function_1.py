@@ -3,9 +3,10 @@ import numpy as np
 from sklearn.model_selection import KFold, cross_val_predict, cross_val_score
 from sklearn.neighbors import KNeighborsClassifier as KNN
 from sklearn.metrics import confusion_matrix
+from extracting_data import extract
+from StockGraph import graph
 
 pd.set_option('display.max_rows', None)
-
 
 def csv_to_df(csv):
     """
@@ -14,6 +15,7 @@ def csv_to_df(csv):
     :param csv: the name of the csv
     :return: a pandas dataframe containing the information from the csv file
     """     
+    extract(csv)
     file_path = csv + ".csv"
     return pd.read_csv(file_path)
 
@@ -34,12 +36,12 @@ def preprocess_data(data):
     :return: None(the dataframe object is modified as per the description above)
     """     
     # Fix column names so they only contain alphanumeric characters  
-    data.rename(columns = {'Close/Last':'Close'}, inplace = True) 
+    #data.rename(columns = {'Close/Last':'Close'}, inplace = True) 
     # Remove $ from price data
-    data.Close = [x.strip('$') for x in data.Close]
-    data.Open = [x.strip('$') for x in data.Open]
-    data.High = [x.strip('$') for x in data.High]
-    data.Low = [x.strip('$') for x in data.Low]
+    # data.Close = [x.strip('$') for x in data.Close]
+    # data.Open = [x.strip('$') for x in data.Open]
+    # data.High = [x.strip('$') for x in data.High]
+    # data.Low = [x.strip('$') for x in data.Low]
     
     # Convert price data to floats
     data.Close = data.Close.astype(float) 
@@ -68,8 +70,8 @@ def preprocess_data(data):
 
     # Create a date column that can be used as a feature
     relative_date = []            
-    for value in range(2517):
-        relative_date.append(abs(value - 2517))
+    for value in range(48):
+        relative_date.append(abs(value - 48))
     data.insert(1, "RelativeDate", relative_date)
                 
 def validate_model(data):
@@ -119,6 +121,7 @@ def validate_model(data):
     print("Specificity = {:.4f}".format(specificity))
     print("Sensitivity = {:.4f}".format(sensitivity))
     print("Accuracy = {:.4f}".format(accuracy))
+    graph(ticker)
     
 def train_model(data):
     """
@@ -136,7 +139,8 @@ def train_model(data):
   
 ## MAIN / TEST PROGRAM
 # Load the data
-data = csv_to_df('microsoft')
+ticker = input("Enter a ticker symbol: ")
+data = csv_to_df(ticker)
 
 # Fix the data
 preprocess_data(data)
