@@ -159,7 +159,7 @@ predictions2 = knn_model.predict(X2)
 print(predictions)
 print(predictions2)
 
-#Results with %62.2 accuracy
+#Result: %62.2 accuracy
 #PPV = 0.6238
 #NPV = 0.2500
 #Specificity = 0.0021
