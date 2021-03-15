@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import KFold, cross_val_predict, cross_val_score
 from sklearn.neighbors import KNeighborsClassifier as KNN
+from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix
 
 pd.set_option('display.max_rows', None)
@@ -87,7 +88,7 @@ def validate_model(data):
     k = 10
     kf = KFold(n_splits=k)
 
-    model = KNN() # Defaults to 5 neighbors, Euclidean distance
+    model = SVC() # SVM-L: linear kernel
 
     y_pred = cross_val_predict(model, X, y, cv = kf)
 
@@ -130,7 +131,7 @@ def train_model(data):
     """       
     X = data.iloc[10:, 1: -2]
     y = data.iloc[10:, -1]
-    model = KNN() # Defaults to 5 neighbors, Euclidean distance
+    model = SVC() # SVM-L: linear kernel
     model.fit(X, y)
     return model
   
@@ -157,3 +158,9 @@ predictions2 = knn_model.predict(X2)
 # Output results
 print(predictions)
 print(predictions2)
+
+#Results with %62.2 accuracy
+#PPV = 0.6238
+#NPV = 0.2500
+#Specificity = 0.0021
+#Accuracy = 0.6227
