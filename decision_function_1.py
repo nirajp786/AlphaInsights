@@ -4,7 +4,7 @@ from sklearn.model_selection import KFold, cross_val_predict, cross_val_score
 from sklearn.neighbors import KNeighborsClassifier as KNN
 from sklearn.metrics import confusion_matrix
 from extracting_data import extract
-from StockGraph import graph
+import StockGraph
 
 pd.set_option('display.max_rows', None)
 
@@ -121,7 +121,7 @@ def validate_model(data):
     print("Specificity = {:.4f}".format(specificity))
     print("Sensitivity = {:.4f}".format(sensitivity))
     print("Accuracy = {:.4f}".format(accuracy))
-    graph(ticker)
+    #graph(ticker)
     
 def train_model(data):
     """
@@ -141,6 +141,7 @@ def train_model(data):
 # Load the data
 ticker = input("Enter a ticker symbol: ")
 data = csv_to_df(ticker)
+#print(data)
 
 # Fix the data
 preprocess_data(data)
@@ -152,12 +153,13 @@ validate_model(data)
 knn_model = train_model(data)
 
 # Make a prediction
-X = data.iloc[0:1, 1: -2]
+X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
 predictions = knn_model.predict(X)
 # Or construct one using a numpy array and transforming it
-X2 = np.array([2517, 231.6, 41872770, 229.517, 233.27, 226.46]).reshape(1, -1)
-predictions2 = knn_model.predict(X2)
+#X2 = np.array([2517, 231.6, 41872770, 229.517, 233.27, 226.46]).reshape(1, -1)
+#predictions2 = knn_model.predict(X2)
 # Output results
-print(predictions)
-print(predictions2)
+
+StockGraph.graph(data, predictions, ticker)
+#print(predictions2)

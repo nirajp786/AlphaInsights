@@ -5,19 +5,17 @@ import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-def graph(ticker): 
-    APPL_STOCK = pd.read_csv(ticker+'.csv') #maybe we can reduce reading the file here again? - redundancy
-    fig = plt.figure(figsize=(10, 6))
+flag = False
+
+def graph(data, predictions, ticker): 
+    data['Predictions'] = predictions
+    data['Buy'] = data.Predictions == 1
+    axes = data.plot(x='RelativeDate', y='Close', kind='line')
+    data[data.Buy].plot(x='RelativeDate', y='Close', kind='scatter', ax = axes, c='green', marker='^', label='Buy')    
+    data[~data.Buy].plot(x='RelativeDate', y='Close', kind='scatter', ax = axes, c='red', marker='v', label='Sell')    
+    plt.legend(loc='lower right');
     plt.xlabel('Date',fontsize=20)
     plt.ylabel('Value',fontsize=20)
     plt.title(ticker+'Stock',fontsize=20)
-
-    def animate(i):
-        data = APPL_STOCK.iloc[:i]
-        p = sns.lineplot(x=data.index, y=data['Close'], data=data, color="r")
-        p.tick_params(labelsize=17)
-        plt.setp(p.lines,linewidth=3)
-        return data
-
-    ani = matplotlib.animation.FuncAnimation(fig, animate, frames=1000, repeat=False, interval=10)
+    
     plt.show()
