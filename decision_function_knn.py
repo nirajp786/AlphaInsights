@@ -2,11 +2,11 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import KFold, cross_val_predict, cross_val_score
 from sklearn.neighbors import KNeighborsClassifier as KNN
-from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix
+from extracting_data import extract
+import StockGraph
 
 pd.set_option('display.max_rows', None)
-
 
 def csv_to_df(csv):
     """
@@ -15,6 +15,7 @@ def csv_to_df(csv):
     :param csv: the name of the csv
     :return: a pandas dataframe containing the information from the csv file
     """     
+    extract(csv)
     file_path = csv + ".csv"
     return pd.read_csv(file_path)
 
@@ -35,12 +36,12 @@ def preprocess_data(data):
     :return: None(the dataframe object is modified as per the description above)
     """     
     # Fix column names so they only contain alphanumeric characters  
-    data.rename(columns = {'Close/Last':'Close'}, inplace = True) 
+    #data.rename(columns = {'Close/Last':'Close'}, inplace = True) 
     # Remove $ from price data
-    data.Close = [x.strip('$') for x in data.Close]
-    data.Open = [x.strip('$') for x in data.Open]
-    data.High = [x.strip('$') for x in data.High]
-    data.Low = [x.strip('$') for x in data.Low]
+    # data.Close = [x.strip('$') for x in data.Close]
+    # data.Open = [x.strip('$') for x in data.Open]
+    # data.High = [x.strip('$') for x in data.High]
+    # data.Low = [x.strip('$') for x in data.Low]
     
     # Convert price data to floats
     data.Close = data.Close.astype(float) 
@@ -69,11 +70,10 @@ def preprocess_data(data):
 
     # Create a date column that can be used as a feature
     relative_date = []            
-    for value in range(2517):
-        relative_date.append(abs(value - 2517))
+    for value in range(len(data)):
+        relative_date.append(abs(value - len(data)))
     data.insert(1, "RelativeDate", relative_date)
-	
-	
+                
 def validate_model(data):
     """
     validate_model runs the KNN model using 10-fold cross-validation and outputs
@@ -81,16 +81,15 @@ def validate_model(data):
     ----------------------------------------------------------------------------
     :param data: a dataframe containing stock data
     :return: None(performance measures are printed)
-    """  
-    global accuracy
+    """   
     X = data.iloc[10:, 1: -2]
     y = data.iloc[10:, -1]
 
-    ### SET UP CROSS-VALIDATION (K-FOLD) ###  
+    ### SET UP CROSS-VALIDATION (K-FOLD) ###
     k = 10
     kf = KFold(n_splits=k)
 
-    model = SVC() # SVM-L: linear kernel
+    model = KNN() # Defaults to 5 neighbors, Euclidean distance
 
     y_pred = cross_val_predict(model, X, y, cv = kf)
 
@@ -114,10 +113,7 @@ def validate_model(data):
 
     # Accuracy
     accuracy = (TP + TN) / n
-	
-    if accuracy < 0.5500:
-       model = KNN() # Defaults to 5 neighbors, Euclidean distance
-	   
+
     #print("Confusion Matrix:")
     print(cm)
     print("PPV = {:.4f}".format(PPV))
@@ -125,10 +121,7 @@ def validate_model(data):
     print("Specificity = {:.4f}".format(specificity))
     print("Sensitivity = {:.4f}".format(sensitivity))
     print("Accuracy = {:.4f}".format(accuracy))
-	
-def get_accuracy ():
-
-    return accuracy
+    #graph(ticker)
     
 def train_model(data):
     """
@@ -140,16 +133,15 @@ def train_model(data):
     """       
     X = data.iloc[10:, 1: -2]
     y = data.iloc[10:, -1]
-    model = SVC()
-    accuracy = get_accuracy ()
-    if accuracy < 0.5500:
-       model = KNN() # Defaults to 5 neighbors, Euclidean distance
+    model = KNN() # Defaults to 5 neighbors, Euclidean distance
     model.fit(X, y)
     return model
   
 ## MAIN / TEST PROGRAM
 # Load the data
-data = csv_to_df('microsoft')
+ticker = input("Enter a ticker symbol: ")
+data = csv_to_df(ticker)
+#print(data)
 
 # Fix the data
 preprocess_data(data)
@@ -161,12 +153,13 @@ validate_model(data)
 knn_model = train_model(data)
 
 # Make a prediction
-X = data.iloc[0:1, 1: -2]
+X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
 predictions = knn_model.predict(X)
 # Or construct one using a numpy array and transforming it
-X2 = np.array([2517, 231.6, 41872770, 229.517, 233.27, 226.46]).reshape(1, -1)
-predictions2 = knn_model.predict(X2)
+#X2 = np.array([2517, 231.6, 41872770, 229.517, 233.27, 226.46]).reshape(1, -1)
+#predictions2 = knn_model.predict(X2)
 # Output results
-print(predictions)
-print(predictions2)
+
+StockGraph.graph(data, predictions, ticker)
+#print(predictions2)
