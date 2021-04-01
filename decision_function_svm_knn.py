@@ -1,6 +1,5 @@
 import pandas as pd
-import numpy as np
-from sklearn.model_selection import KFold, cross_val_predict, cross_val_score
+from sklearn.model_selection import KFold, cross_val_predict
 from sklearn.neighbors import KNeighborsClassifier as KNN
 from sklearn.svm import SVC
 from extracting_data import extract
@@ -37,28 +36,26 @@ def preprocess_data(data):
     :param data: a dataframe containing stock data
     :return: None(the dataframe object is modified as per the description above)
     """     
-    # Fix column names so they only contain alphanumeric characters  
-    # data.rename(columns = {'Close/Last':'Close'}, inplace = True) 
-    # Remove $ from price data
-    # data.Close = [x.strip('$') for x in data.Close]
-    # data.Open = [x.strip('$') for x in data.Open]
-    # data.High = [x.strip('$') for x in data.High]
-    # data.Low = [x.strip('$') for x in data.Low]
-    
-    # Convert price data to floats
-    data.Close = data.Close.astype(float) 
-    data.Open = data.Open.astype(float) 
-    data.High = data.High.astype(float) 
-    data.Low = data.Low.astype(float) 
 
+    # Convert date from a string to a datetime object   
+    data['Date'] = pd.to_datetime(data['Date'], format='%Y-%m-%d')
+    
+    # Create a date column that can be used as a feature
+    relative_date = []            
+    for value in range(len(data)):
+        relative_date.append(value)
+    data.insert(len(data.columns), "RelativeDate", relative_date)
+    
     # Create a new column showing how the price will change in 10 days
-    ten_day_change = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ten_day_change = []
     for index, price in enumerate(data['Close']):
-        if index > 9:
-            price_today = data.iloc[index][1]
-            price_in_10_days = data.iloc[index - 10][1]
-            price_change = price_in_10_days - price_today
+        if index < len(data) - 10:
+            current_price = data.iloc[index][4]
+            future_price = data.iloc[index + 10][4]
+            price_change = future_price - current_price
             ten_day_change.append(price_change)
+        else:
+            ten_day_change.append(0)
     data.insert(len(data.columns), "TenDayChange", ten_day_change)
 
     # Create labels column (1 if price has increased, 0 otherwise)
@@ -69,12 +66,6 @@ def preprocess_data(data):
         else:
             direction_of_change.append(0)
     data.insert(len(data.columns), "Direction", direction_of_change)
-
-    # Create a date column that can be used as a feature
-    relative_date = []            
-    for value in range(len(data)):
-        relative_date.append(abs(value - len(data)))
-    data.insert(1, "RelativeDate", relative_date)
 	
 	
 def validate_model(data):
@@ -93,7 +84,7 @@ def validate_model(data):
     k = 10
     kf = KFold(n_splits=k)
 
-    model = SVC() # SVM-L: linear kernel
+    model = KNN() # SVM-L: linear kernel
 
     y_pred = cross_val_predict(model, X, y, cv = kf)
 
