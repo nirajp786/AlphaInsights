@@ -3,6 +3,7 @@ from extracting_data import extract
 from stock_graph import graph, simulate
 from preprocessing import preprocess_data
 from decision_function_knn import validate_model_knn, train_model_knn
+#import decision_function_knn as dfk
 from decision_function_svm import validate_model_svm, train_model_svm
 from decision_function_dt import validate_model_dt, train_model_dt
 from decision_function_rf import validate_model_rf, train_model_rf
@@ -21,110 +22,113 @@ def csv_to_df(csv):
     file_path = csv + ".csv"
     return pd.read_csv(file_path)
 
-## MAIN / TEST PROGRAM with KNN Classifier
-print(SEPERATOR)
-print('KNN Classifier:')
-# Load the data
 ticker = input("Enter a ticker symbol: ")
-data = csv_to_df(ticker)
-# Fix the data
-preprocess_data(data)
-# Test the model
-validate_model_knn(data)
-# Store the model for making predictions
-knn_model = train_model_knn(data)
-# Make a prediction
-X = data.iloc[0:, 1: -2]
-# Can pass a row of a pandas dataframe directly
-predictions = knn_model.predict(X)
-print(predictions)
-graph(data, predictions, ticker)
-#simulate(data, predictions, ticker)
-print(SEPERATOR)
+for i in range(1):
+
+  ## MAIN / TEST PROGRAM with KNN Classifier
+  print(SEPERATOR)
+  print('KNN Classifier:')
+  # Load the data
+  data = csv_to_df(ticker)
+  # Fix the data
+  preprocess_data(data)
+  # Test the model
+  validate_model_knn(data)
+  # Store the model for making predictions
+  knn_model = train_model_knn(data)
+  # Make a prediction
+  X = data.iloc[0:, 1: -2]
+  # Can pass a row of a pandas dataframe directly
+  predictions = knn_model.predict(X)
+  print(predictions)
+  graph(data, predictions, ticker)
+  #simulate(data, predictions, ticker)
+  print(SEPERATOR)
+
+  ## MAIN / TEST PROGRAM with SVM Classifier
+  print('SVM with RBF KERNAL Classifier:')
+  # Load the data
+  data = csv_to_df(ticker)
+  # Fix the data
+  preprocess_data(data)
+  # Test the model
+  validate_model_svm(data)
+  # Store the model for making predictions
+  SVM_model = train_model_svm(data)
+  # Make a prediction
+  X = data.iloc[0:, 1: -2]
+  # Can pass a row of a pandas dataframe directly
+  predictions = SVM_model.predict(X)
+  print(predictions)
+  graph(data, predictions, ticker)
+  #simulate(data, predictions, ticker)
+  print(SEPERATOR)
 
 
+  ## MAIN / TEST PROGRAM with Decision Tree Classifier
+  print('Decision Tree Classifier:')
+  # Load the data
+  data = csv_to_df(ticker)
+  # Fix the data
+  preprocess_data(data)
+  # Test the model
+  validate_model_dt(data)
+  # Store the model for making predictions
+  DT_model = train_model_dt(data)
+  # Make a prediction
+  X = data.iloc[0:, 1: -2]
+  # Can pass a row of a pandas dataframe directly
+  predictions = DT_model.predict(X)
+  print(predictions)
+  graph(data, predictions, ticker)
+  #simulate(data, predictions, ticker)
+  print(SEPERATOR)
 
-## MAIN / TEST PROGRAM with SVM Classifier
-print('SVM with RBF KERNAL Classifier:')
-# Load the data
-ticker = input("Enter a ticker symbol: ")
-data = csv_to_df(ticker)
-# Fix the data
-preprocess_data(data)
-# Test the model
-validate_model_svm(data)
-# Store the model for making predictions
-SVM_model = train_model_svm(data)
-# Make a prediction
-X = data.iloc[0:, 1: -2]
-# Can pass a row of a pandas dataframe directly
-predictions = SVM_model.predict(X)
-print(predictions)
-graph(data, predictions, ticker)
-#simulate(data, predictions, ticker)
-print(SEPERATOR)
+  ## MAIN / TEST PROGRAM with Random Forest Classifier
+  print('Random Forest Classifier:')
+  # Load the data
+  data = csv_to_df(ticker)
+  # Fix the data
+  preprocess_data(data)
+  # Test the model
+  validate_model_rf(data)
+  # Store the model for making predictions
+  RF_model = train_model_rf(data)
+  # Make a prediction
+  X = data.iloc[0:, 1: -2]
+  # Can pass a row of a pandas dataframe directly
+  predictions = RF_model.predict(X)
+  print(predictions)
+  graph(data, predictions, ticker)
+  #simulate(data, predictions, ticker)
+  print(SEPERATOR)
 
-
-## MAIN / TEST PROGRAM with Decision Tree Classifier
-print('Decision Tree Classifier:')
-# Load the data
-ticker = input("Enter a ticker symbol: ")
-data = csv_to_df(ticker)
-# Fix the data
-preprocess_data(data)
-# Test the model
-validate_model_dt(data)
-# Store the model for making predictions
-DT_model = train_model_dt(data)
-# Make a prediction
-X = data.iloc[0:, 1: -2]
-# Can pass a row of a pandas dataframe directly
-predictions = DT_model.predict(X)
-print(predictions)
-graph(data, predictions, ticker)
-#simulate(data, predictions, ticker)
-print(SEPERATOR)
-
-
-## MAIN / TEST PROGRAM with Random Forest Classifier
-print('Random Forest Classifier:')
-# Load the data
-ticker = input("Enter a ticker symbol: ")
-data = csv_to_df(ticker)
-# Fix the data
-preprocess_data(data)
-# Test the model
-validate_model_rf(data)
-# Store the model for making predictions
-RF_model = train_model_rf(data)
-# Make a prediction
-X = data.iloc[0:, 1: -2]
-# Can pass a row of a pandas dataframe directly
-predictions = RF_model.predict(X)
-print(predictions)
-graph(data, predictions, ticker)
-#simulate(data, predictions, ticker)
-print(SEPERATOR)
-
-## MAIN / TEST PROGRAM MLPC Classifier
-print('MLP Classifier:')
-# Load the data
-ticker = input("Enter a ticker symbol: ")
-data = csv_to_df(ticker)
-# Fix the data
-preprocess_data(data)
-# Test the model
-validate_model_mlp(data)
-# Store the model for making predictions
-MLP_model = train_model_mlp(data)
-# Make a prediction
-X = data.iloc[0:, 1: -2]
-# Can pass a row of a pandas dataframe directly
-predictions = MLP_model.predict(X)
-print(predictions)
-graph(data, predictions, ticker)
-#simulate(data, predictions, ticker)
-print(SEPERATOR)
+  ## MAIN / TEST PROGRAM MLPC Classifier
+  print('MLP Classifier:')
+  # Load the data
+  data = csv_to_df(ticker)
+  # Fix the data
+  preprocess_data(data)
+  # Test the model
+  validate_model_mlp(data)
+  # Store the model for making predictions
+  MLP_model = train_model_mlp(data)
+  # Make a prediction
+  X = data.iloc[0:, 1: -2]
+  # Can pass a row of a pandas dataframe directly
+  predictions = MLP_model.predict(X)
+  print(predictions)
+  graph(data, predictions, ticker)
+  #simulate(data, predictions, ticker)
+  print(SEPERATOR)
+  
+#acc1 = validate_model_knn
+#acc2 = validate_model_svm
+#acc3 = validate_model_dt
+#acc4 = validate_model_rf
+#acc5 = validate_model_mlp
+#print(max(acc1,acc2,acc3,acc4, acc5))
+#TypeError: '>' not supported between instances of 'function' and 'function'
 
 
 # Or construct one using a numpy array and transforming it
