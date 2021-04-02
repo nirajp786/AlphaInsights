@@ -1,7 +1,6 @@
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-
 # Note: Use %matplotlib qt for animation
 
 
@@ -32,7 +31,6 @@ def simulate(data, predictions, ticker):
         else:
             buy_points.append(None)
     data.insert(len(data.columns), "BuyPoints", buy_points)
-    print(data.head())
     
     # set a figure of size (10,6):
     fig = plt.figure(figsize=(10,6))
@@ -88,6 +86,8 @@ def simulate(data, predictions, ticker):
     # call Matplotlib animation.Funcanimation, providing the input arguments of fig, animate, the number of frames and an interval:
     ani = animation.FuncAnimation(fig, animate, frames = len(data), interval=100) 
     
+    plt.show()
+
     # Use the 'ffmpeg' writer:
     Writer = animation.writers['ffmpeg']
     # Set the frames per second and bitrate of the video:

@@ -21,7 +21,6 @@ def csv_to_df(csv):
 
 ticker = input("Enter a ticker symbol: ")
 data = csv_to_df(ticker)
-
 # Fix the data
 preprocess_data(data)
 
@@ -35,16 +34,5 @@ knn_model = train_model(data)
 X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
 predictions = knn_model.predict(X)
-print(predictions)
-graph(data, predictions, ticker)
-transaction_history = run_ledger(data, predictions, ticker)
-simulate(data, predictions, ticker)
 
-
-
-# Or construct one using a numpy array and transforming it
-# X2 = np.array([2517, 231.6, 41872770, 229.517, 233.27, 226.46]).reshape(1, -1)
-# predictions2 = knn_model.predict(X2)
-# Output results
-# print(predictions)
-# print(predictions2)
+run_ledger(data, predictions, ticker)
