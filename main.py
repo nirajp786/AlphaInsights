@@ -1,7 +1,7 @@
 import pandas as pd
 from extracting_data import extract
 from preprocessing import preprocess_data
-from stock_graph import graph
+from stock_graph import graph, simulate
 from decision_function import validate_model, train_model
 
 def csv_to_df(csv):
@@ -35,6 +35,7 @@ X = data.iloc[0:, 1: -2]
 predictions = knn_model.predict(X)
 print(predictions)
 graph(data, predictions, ticker)
+simulate(data, predictions, ticker)
 # Or construct one using a numpy array and transforming it
 # X2 = np.array([2517, 231.6, 41872770, 229.517, 233.27, 226.46]).reshape(1, -1)
 # predictions2 = knn_model.predict(X2)
