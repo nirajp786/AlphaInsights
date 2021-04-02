@@ -35,4 +35,4 @@ X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
 predictions = knn_model.predict(X)
 
-run_ledger(data, predictions, ticker)
+transaction_history = run_ledger(data, predictions, ticker)
