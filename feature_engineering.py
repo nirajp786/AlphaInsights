@@ -1,6 +1,6 @@
 import numpy as np
 
-def moving_average(data, span):
+def moving_average(data, span, style):
     
     # Moving average will store the set of moving average values
     moving_average = []
@@ -11,7 +11,7 @@ def moving_average(data, span):
     for index, row in data.iterrows():
         i = index % span
         removed = window[i]
-        window[i] = row['Close']
+        window[i] = row[style]
         total = total + window[i]
         # The general case
         if (index >= span):
@@ -26,7 +26,14 @@ def moving_average(data, span):
         else: 
             moving_average.append(total / (i + 1)) # Should be "None, but causes model to fail
     # Add a new column to the data frame, before target variable (can add multiple MAs)
-    column_name = "MovingAverage" + str(span)
+    if (style == 'Close'):
+        metric = 'price'
+    else:
+        metric = 'volume'
+    
+    column_name = "MA" + str(span) + metric
     location = data.columns.get_loc('Direction')
     data.insert(location, column_name, moving_average)
+    
+        
     

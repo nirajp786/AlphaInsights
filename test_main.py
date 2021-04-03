@@ -26,8 +26,8 @@ data = csv_to_df(ticker)
 preprocess_data(data)
 
 #Add moving averages
-feat.moving_average(data, 10)
-feat.moving_average(data, 30)
+feat.moving_average(data, 10, 'Volume')
+feat.moving_average(data, 30, 'Volume')
 
 # Test the model
 validate_model(data)
@@ -41,4 +41,4 @@ X = data.iloc[0:, 1: -2]
 predictions = knn_model.predict(X)
 
 #transaction_history = run_ledger(data, predictions, ticker)
-print(data)
+print(data[['Volume', 'MA10volume']])
