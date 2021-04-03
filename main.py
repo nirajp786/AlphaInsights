@@ -38,7 +38,6 @@ predictions = knn_model.predict(X)
 print(predictions)
 graph(data, predictions, ticker)
 transaction_history = run_ledger(data, predictions, ticker)
-transaction_history = run_ledger(data, predictions, ticker)
 simulate(data, predictions, ticker)
 
 # Or construct one using a numpy array and transforming it
