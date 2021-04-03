@@ -16,8 +16,8 @@ def validate_model(data):
     :return: None(performance measures are printed)
     """  
     global accuracy
-    X = data.iloc[:, 1: -2]
-    y = data.iloc[:, -1]
+    X = data.iloc[:-10, 1: -2]
+    y = data.iloc[:-10, -1]
 
     ### SET UP CROSS-VALIDATION (K-FOLD) ###  
     k = 10
@@ -71,8 +71,8 @@ def train_model(data):
     :param data: a dataframe containing stock data for training the model
     :return: a trained model that can be used to make predictions
     """       
-    X = data.iloc[10:, 1: -2]
-    y = data.iloc[10:, -1]
+    X = data.iloc[:-10, 1: -2]
+    y = data.iloc[:-10, -1]
     model = SVC()
     accuracy = get_accuracy ()
     if accuracy < 0.5500:

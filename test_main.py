@@ -41,4 +41,4 @@ X = data.iloc[0:, 1: -2]
 predictions = knn_model.predict(X)
 
 #transaction_history = run_ledger(data, predictions, ticker)
-print(data.columns)
+print(data)
