@@ -30,7 +30,6 @@ def moving_average(data, span, style):
         metric = 'price'
     else:
         metric = 'volume'
-    
     column_name = "MA" + str(span) + metric
     location = data.columns.get_loc('Direction')
     data.insert(location, column_name, moving_average)
