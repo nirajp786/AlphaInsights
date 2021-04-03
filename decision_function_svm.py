@@ -32,8 +32,8 @@ def validate_model_svm(data):
     #model.fit(X, y)
 
 
-    #model = SVC(kernel='poly', degree=2, gamma='scale', C=1) #defult RBF Kernel #took forever and did not do well
-    model = SVC(kernel='rbf', gamma='scale')
+    #model = SVC(kernel='poly', degree=2, gamma='scale', C=1) #took forever and did not do well
+    model = SVC(kernel='rbf', gamma='scale') #defult RBF Kernel
 
     y_pred = cross_val_predict(model, X, y, cv = kf)
 
@@ -78,6 +78,6 @@ def train_model_svm(data):
     X = data.iloc[:-10, 1: -2]
     y = data.iloc[:-10, -1]
     #model = SVC(kernel='poly', degree=2, gamma='scale', C=1)  #took forever and did not do well
-    model = SVC(kernel='rbf', gamma='scale')
+    model = SVC(kernel='rbf', gamma='scale') #defult RBF Kernel
     model.fit(X, y)
     return model
