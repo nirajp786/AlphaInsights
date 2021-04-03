@@ -1,11 +1,11 @@
-
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+
 
 # Note: Use %matplotlib qt for animation
 
 
-def graph(data, predictions, ticker): 
+def graph(data, predictions, ticker, title):
     data['Predictions'] = predictions
     data['Buy'] = data.Predictions == 1
       
@@ -15,12 +15,10 @@ def graph(data, predictions, ticker):
     plt.legend(loc='lower right');
     plt.xlabel('Date',fontsize=20)
     plt.ylabel('Price',fontsize=20)
-    plt.title(ticker+' Stock',fontsize=20)
-    
+    plt.title(ticker+' Stock: '+title,fontsize=20)
+
     plt.show()
-    
-    
-    
+
 def simulate(data, predictions, ticker):
     data['Predictions'] = predictions
     data['Buy'] = data.Predictions == 1
