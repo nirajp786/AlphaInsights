@@ -30,7 +30,7 @@ def preprocess_data(data):
     ten_day_change = []
     for index, price in enumerate(data['Close']):
         if index < len(data) - 10:
-            current_price = data.iloc[index][4]
+            current_price = data.iloc[index][4] # Column 4 is the 'Close' column
             future_price = data.iloc[index + 10][4]
             price_change = future_price - current_price
             ten_day_change.append(price_change)

@@ -4,6 +4,7 @@ from preprocessing import preprocess_data
 from stock_graph import graph, simulate
 from decision_function import validate_model, train_model
 from ledger import run_ledger
+import feature_engineering as feat
 
 def csv_to_df(csv):
     """
@@ -24,6 +25,10 @@ data = csv_to_df(ticker)
 # Fix the data
 preprocess_data(data)
 
+#Add moving averages
+feat.moving_average(data, 10)
+feat.moving_average(data, 30)
+
 # Test the model
 validate_model(data)
 
@@ -35,4 +40,5 @@ X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
 predictions = knn_model.predict(X)
 
-transaction_history = run_ledger(data, predictions, ticker)
+#transaction_history = run_ledger(data, predictions, ticker)
+print(data.columns)

@@ -1,7 +1,6 @@
 import pandas as pd
 from datetime import timedelta
 
-
 def determine_pl(buy_price, price_change):
     shares_bought = 1000 / buy_price
     profit_loss = shares_bought * price_change

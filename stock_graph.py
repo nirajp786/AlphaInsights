@@ -1,33 +1,40 @@
-
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 # Note: Use %matplotlib qt for animation
 
-
 def graph(data, predictions, ticker): 
+    # Add 'Buy' column to identify plotting points
     data['Predictions'] = predictions
     data['Buy'] = data.Predictions == 1
-      
+    
+    # Plot the axes
     axes = data.plot(x='Date', y='Close', kind='line')
+    
+    # Plote the "buy" points
     data[data.Buy].plot(x='Date', y='Close', kind='scatter', ax = axes, c='green', marker='^', label='Buy')    
+    
+    # Optional: Plot non-buy points
     #data[~data.Buy].plot(x='RelativeDate', y='Close', kind='scatter', ax = axes, c='red', marker='v', label='Sell')    
+    
+    # Add other chart elements
     plt.legend(loc='lower right');
     plt.xlabel('Date',fontsize=20)
     plt.ylabel('Price',fontsize=20)
     plt.title(ticker+' Stock',fontsize=20)
     
-    plt.show()
-    
-    
+    # Display the chart
+    plt.show() 
     
 def simulate(data, predictions, ticker):
-    data['Predictions'] = predictions
-    data['Buy'] = data.Predictions == 1
     
-    buy_points = []            
-    for i in range(len(data)):
-        if (data.iloc[i][11]):
-            buy_points.append(data.iloc[i][4])
+    # Add 'Buy' column to identify plotting points
+    data['Predictions'] = predictions
+    
+    # Create "Buy Points" column in the dataframe (points where stock is purchased)
+    buy_points = []  
+    for index, row in data.iterrows():
+        if (row['Predictions']):
+            buy_points.append(row['Close'])
         else:
             buy_points.append(None)
     data.insert(len(data.columns), "BuyPoints", buy_points)
@@ -40,10 +47,7 @@ def simulate(data, predictions, ticker):
     ax1.axis(xmin = data.Date[0], xmax = data.Date[len(data) - 1])
     # add limits on the y-axis defined by minimum and maximum of the respective series, incorporate some additional room:
     ax1.axis(ymin= (data['Close'].min()-0.1),ymax=(data['Close'].max()+0.1))
-    
-    plt.xlim([data.Date[0], data.Date[len(data) - 1]])
-    plt.autoscale(False)
-    
+       
     # define the function animate, which has the input argument of i:
     def animate(i):
         #   set the variable data to contain 0 to the (i+1)th row:
@@ -55,39 +59,36 @@ def simulate(data, predictions, ticker):
         #   initialise zp as an empty list:
         zp = []
   
-        #   set the variable lines as equal to the variable data:
+        #   set the variable lines as equal to the Dataframe (data):
         lines = df
         
         #   for a line in lines:
         for line in lines:
-            #     x is equal to the index (time domain):
+            # x is equal to the index (time domain):
             xp = df['Date']
-            #     y is equal to the 'Close' column
+            # y is equal to the 'Close' column
             yp = df['Close']
-            #     z is equal to the 'BuyPoints' column
+            # z is equal to the 'BuyPoints' column
             zp = df['BuyPoints']
 
-        #   clear ax(1):
+        # clear ax(1):
         ax1.clear()
         
-        #   plot stock chart:
+        # plot stock chart:
         ax1.plot(xp, yp)
-        #   plot buy points:   
+        # plot buy points:   
         ax1.scatter(xp, zp, c='green', marker='^') 
         
-        #   provide a label for the x-axis:
+        # provide a label for the x-axis:
         plt.xlabel('Date',fontsize=12)
-        #   provide a label for the y-axis:  
+        # provide a label for the y-axis:  
         plt.ylabel('Price',fontsize=12)
-        #   provide a plot title:   
+        # provide a plot title:   
         plt.title(ticker+' Stock',fontsize=20)
-
     
     # call Matplotlib animation.Funcanimation, providing the input arguments of fig, animate, the number of frames and an interval:
     ani = animation.FuncAnimation(fig, animate, frames = len(data), interval=100) 
     
-    plt.show()
-
     # Use the 'ffmpeg' writer:
     Writer = animation.writers['ffmpeg']
     # Set the frames per second and bitrate of the video:

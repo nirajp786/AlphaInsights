@@ -16,8 +16,8 @@ def validate_model(data):
     :return: None(performance measures are printed)
     """  
     global accuracy
-    X = data.iloc[10:, 1: -2]
-    y = data.iloc[10:, -1]
+    X = data.iloc[:, 1: -2]
+    y = data.iloc[:, -1]
 
     ### SET UP CROSS-VALIDATION (K-FOLD) ###  
     k = 10
