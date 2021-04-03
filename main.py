@@ -1,28 +1,13 @@
-import pandas as pd
 from ledger import run_ledger
-from extracting_data import extract
+from extracting_data import csv_to_df
 from stock_graph import graph, simulate
 import feature_engineering as feat
 from preprocessing import preprocess_data
-from decision_function_knn import validate_model_knn, train_model_knn
-from decision_function_svm import validate_model_svm, train_model_svm
-from decision_function_dt import validate_model_dt, train_model_dt
-from decision_function_rf import validate_model_rf, train_model_rf
-from decision_function_mlp import validate_model_mlp, train_model_mlp
-
+from decision_function import validate_model, train_model
 
 SEPERATOR = '=========================================='
 
-def csv_to_df(csv):
-    """
-    csv_to_df reads a .csv file and converts it into a pandas dataframe
-    ----------------------------------------------------------------------------
-    :param csv: the name of the csv
-    :return: a pandas dataframe containing the information from the csv file
-    """
-    extract(csv)
-    file_path = csv + ".csv"
-    return pd.read_csv(file_path)
+
 
 ticker = input("Enter a ticker symbol: ")
 
@@ -50,9 +35,9 @@ preprocess_data(data)
 feat.moving_average(data, 10, 'Close')
 feat.moving_average(data, 30, 'Close')
 # Test the model
-acc_knn, ppv_knn, k = validate_model_knn(data)
+acc_knn, ppv_knn, k = validate_model(data, 'KNN')
 # Store the model for making predictions
-knn_model = train_model_knn(data, k)
+knn_model = train_model(data, 'KNN', k)
 # Make a prediction
 X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
@@ -73,9 +58,9 @@ preprocess_data(data)
 feat.moving_average(data, 10, 'Close')
 feat.moving_average(data, 30, 'Close')
 # Test the model
-acc_svm, ppv_svm = validate_model_svm(data)
+acc_svm, ppv_svm, k = validate_model(data, 'SVM')
 # Store the model for making predictions
-SVM_model = train_model_svm(data)
+SVM_model = train_model(data, 'SVM')
 # Make a prediction
 X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
@@ -97,9 +82,9 @@ preprocess_data(data)
 feat.moving_average(data, 10, 'Close')
 feat.moving_average(data, 30, 'Close')
 # Test the model
-acc_dt, ppv_dt = validate_model_dt(data)
+acc_dt, ppv_dt, k = validate_model(data, 'DT')
 # Store the model for making predictions
-DT_model = train_model_dt(data)
+DT_model = train_model(data, 'DT')
 # Make a prediction
 X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
@@ -120,9 +105,9 @@ preprocess_data(data)
 feat.moving_average(data, 10, 'Close')
 feat.moving_average(data, 30, 'Close')
 # Test the model
-acc_rf, ppv_rf = validate_model_rf(data)
+acc_rf, ppv_rf, k = validate_model(data, 'RF')
 # Store the model for making predictions
-RF_model = train_model_rf(data)
+RF_model = train_model(data, 'RF')
 # Make a prediction
 X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
@@ -143,9 +128,9 @@ preprocess_data(data)
 feat.moving_average(data, 10, 'Close')
 feat.moving_average(data, 30, 'Close')
 # Test the model
-acc_mlp, ppv_mlp  = validate_model_mlp(data)
+acc_mlp, ppv_mlp, k  = validate_model(data, 'MLP')
 # Store the model for making predictions
-MLP_model = train_model_mlp(data)
+MLP_model = train_model(data, 'MLP')
 # Make a prediction
 X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly

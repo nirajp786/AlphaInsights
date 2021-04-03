@@ -2,6 +2,18 @@ import time
 import datetime
 import csv
 import requests
+import pandas as pd
+
+def csv_to_df(csv):
+    """
+    csv_to_df reads a .csv file and converts it into a pandas dataframe
+    ----------------------------------------------------------------------------
+    :param csv: the name of the csv
+    :return: a pandas dataframe containing the information from the csv file
+    """
+    extract(csv)
+    file_path = csv + ".csv"
+    return pd.read_csv(file_path)
 
 def extract(ticker):  
     

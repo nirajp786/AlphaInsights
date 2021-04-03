@@ -6,7 +6,6 @@ import pandas as pd
 
 pd.set_option('display.max_rows', None)
 
-	
 def validate_model_svm(data):
     """
     validate_model runs the SVM with defult RBF Kernal model using 10-fold cross-validation 
@@ -23,7 +22,8 @@ def validate_model_svm(data):
     kf = KFold(n_splits=k)
 
     #Create a dictionary called param_grid and fill out some parameters for kernels, C and gamma
-    #param_grid = {'C': [0.001, 0.01, 0.1, 1, 10], 'kernel':['rbf', 'poly', 'sigmoid'],
+    #param_grid = {'C': [0.001, 0.01, 0.1, 1, 10], 
+                  #'kernel':['rbf', 'poly', 'sigmoid'],
                   #'degree': [1, 2, 3],
                   #'gamma': [0.001, 0.01, 0.1, 1]}
 
