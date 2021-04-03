@@ -50,15 +50,15 @@ preprocess_data(data)
 feat.moving_average(data, 10)
 feat.moving_average(data, 30)
 # Test the model
-acc_knn, ppv_knn = validate_model_knn(data)
+acc_knn, ppv_knn, k = validate_model_knn(data)
 # Store the model for making predictions
-knn_model = train_model_knn(data)
+knn_model = train_model_knn(data, k)
 # Make a prediction
 X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
 predictions_knn = knn_model.predict(X)
 print(predictions_knn)
-graph(data, predictions_knn, ticker)
+graph(data, predictions_knn, ticker,'KNN')
 #transaction_history = run_ledger(data, predictions_knn, ticker)
 #simulate(data, predictions_knn, ticker)
 print(SEPERATOR)
@@ -81,7 +81,7 @@ X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
 predictions_svm = SVM_model.predict(X)
 print(predictions_svm)
-graph(data, predictions_svm , ticker)
+graph(data, predictions_svm , ticker, 'SVM')
 #transaction_history = run_ledger(data, predictions_svm, ticker)
 #simulate(data, predictions_svm, ticker)
 print(SEPERATOR)
@@ -105,7 +105,7 @@ X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
 predictions_dt = DT_model.predict(X)
 print(predictions_dt)
-graph(data, predictions_dt, ticker)
+graph(data, predictions_dt, ticker, 'DT')
 #transaction_history = run_ledger(data, predictions_dt, ticker)
 #simulate(data, predictions_dt, ticker)
 print(SEPERATOR)
@@ -128,7 +128,7 @@ X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
 predictions_rf = RF_model.predict(X)
 print(predictions_rf)
-graph(data, predictions_rf, ticker)
+graph(data, predictions_rf, ticker, 'RF')
 #transaction_history = run_ledger(data, predictions_rf, ticker)
 #simulate(data, predictions_rf, ticker)
 print(SEPERATOR)
@@ -151,7 +151,7 @@ X = data.iloc[0:, 1: -2]
 # Can pass a row of a pandas dataframe directly
 predictions_mpl = MLP_model.predict(X)
 print(predictions_mpl)
-graph(data, predictions_mpl, ticker)
+graph(data, predictions_mpl, ticker, 'MPL')
 #transaction_history = run_ledger(data, predictions_mpl, ticker)
 #simulate(data, predictions_mpl, ticker)
 print(SEPERATOR)
