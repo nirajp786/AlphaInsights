@@ -47,8 +47,8 @@ data = csv_to_df(ticker)
 # Fix the data
 preprocess_data(data)
 #Add moving averages
-feat.moving_average(data, 10)
-feat.moving_average(data, 30)
+feat.moving_average(data, 10, 'Close')
+feat.moving_average(data, 30, 'Close')
 # Test the model
 acc_knn, ppv_knn, k = validate_model_knn(data)
 # Store the model for making predictions
@@ -70,8 +70,8 @@ data = csv_to_df(ticker)
 # Fix the data
 preprocess_data(data)
 #Add moving averages
-feat.moving_average(data, 10)
-feat.moving_average(data, 30)
+feat.moving_average(data, 10, 'Close')
+feat.moving_average(data, 30, 'Close')
 # Test the model
 acc_svm, ppv_svm = validate_model_svm(data)
 # Store the model for making predictions
@@ -94,8 +94,8 @@ data = csv_to_df(ticker)
 # Fix the data
 preprocess_data(data)
 #Add moving averages
-feat.moving_average(data, 10)
-feat.moving_average(data, 30)
+feat.moving_average(data, 10, 'Close')
+feat.moving_average(data, 30, 'Close')
 # Test the model
 acc_dt, ppv_dt = validate_model_dt(data)
 # Store the model for making predictions
@@ -117,8 +117,8 @@ data = csv_to_df(ticker)
 # Fix the data
 preprocess_data(data)
 #Add moving averages
-feat.moving_average(data, 10)
-feat.moving_average(data, 30)
+feat.moving_average(data, 10, 'Close')
+feat.moving_average(data, 30, 'Close')
 # Test the model
 acc_rf, ppv_rf = validate_model_rf(data)
 # Store the model for making predictions
@@ -140,8 +140,8 @@ data = csv_to_df(ticker)
 # Fix the data
 preprocess_data(data)
 #Add moving averages
-feat.moving_average(data, 10)
-feat.moving_average(data, 30)
+feat.moving_average(data, 10, 'Close')
+feat.moving_average(data, 30, 'Close')
 # Test the model
 acc_mlp, ppv_mlp  = validate_model_mlp(data)
 # Store the model for making predictions
