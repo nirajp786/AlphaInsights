@@ -28,9 +28,10 @@ def validate_model_svm(data):
                   #'gamma': [0.001, 0.01, 0.1, 1]}
 
     #Create a GridSearchCV object and fit it to the training data
-    #model = GridSearchCV(SVC(),param_grid)
-    #model.fit(X, y)
-
+    #svc_grid = GridSearchCV(SVC(),param_grid, cv=kf)
+    #svc_grid.fit(X, y)
+    #best_params = svc_grid.best_params_
+    #model = SVC(best_params)
 
     #model = SVC(kernel='poly', degree=2, gamma='scale', C=1) #took forever and did not do well
     model = SVC(kernel='rbf', gamma='scale') #defult RBF Kernel
@@ -77,6 +78,7 @@ def train_model_svm(data):
     """       
     X = data.iloc[:-10, 1: -2]
     y = data.iloc[:-10, -1]
+    #model = GridSearchCV(SVC(), best_params) #I had best_params set as one of the params in this fuction and retruned from validat_model
     #model = SVC(kernel='poly', degree=2, gamma='scale', C=1)  #took forever and did not do well
     model = SVC(kernel='rbf', gamma='scale') #defult RBF Kernel
     model.fit(X, y)
