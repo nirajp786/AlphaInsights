@@ -1,29 +1,27 @@
-import pandas as pd
 from sklearn.model_selection import KFold, cross_val_predict
-from sklearn.neighbors import KNeighborsClassifier as KNN
-from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import confusion_matrix
+import pandas as pd
 
 pd.set_option('display.max_rows', None)
 
-	
-def validate_model(data):
+
+def validate_model_dt(data):
     """
-    validate_model runs the KNN model using 10-fold cross-validation and outputs
+    validate_model_svm runs the DecisionTree Classifier 10-fold cross-validation and outputs
     the accuracy, as well as a confusion matrix and some other performance measures.
     ----------------------------------------------------------------------------
     :param data: a dataframe containing stock data
     :return: None(performance measures are printed)
-    """  
-    global accuracy
+    """
     X = data.iloc[:-10, 1: -2]
     y = data.iloc[:-10, -1]
 
-    ### SET UP CROSS-VALIDATION (K-FOLD) ###  
+    ### SET UP CROSS-VALIDATION (K-FOLD) ###
     k = 10
     kf = KFold(n_splits=k)
 
-    model = KNN() # SVM-L: linear kernel
+    model = DecisionTreeClassifier()
 
     y_pred = cross_val_predict(model, X, y, cv = kf)
 
@@ -47,10 +45,7 @@ def validate_model(data):
 
     # Accuracy
     accuracy = (TP + TN) / n
-	
-    if accuracy < 0.5500:
-       model = KNN() # Defaults to 5 neighbors, Euclidean distance
-	   
+
     #print("Confusion Matrix:")
     print(cm)
     print("PPV = {:.4f}".format(PPV))
@@ -58,25 +53,19 @@ def validate_model(data):
     print("Specificity = {:.4f}".format(specificity))
     print("Sensitivity = {:.4f}".format(sensitivity))
     print("Accuracy = {:.4f}".format(accuracy))
-	
-def get_accuracy ():
+    return accuracy, PPV
 
-    return accuracy
-    
-def train_model(data):
+
+def train_model_dt(data):
     """
-    train_model trains the model using all of the data in the dataframe input. 
+    train_model trains the model using all of the data in the dataframe input.
     It returns a trained model that make predictions using model.predict(X).
     ----------------------------------------------------------------------------
     :param data: a dataframe containing stock data for training the model
     :return: a trained model that can be used to make predictions
-    """       
+    """
     X = data.iloc[:-10, 1: -2]
     y = data.iloc[:-10, -1]
-    model = SVC()
-    accuracy = get_accuracy ()
-    if accuracy < 0.5500:
-       model = KNN() # Defaults to 5 neighbors, Euclidean distance
+    model = DecisionTreeClassifier()
     model.fit(X, y)
     return model
-  
