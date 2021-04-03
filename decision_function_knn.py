@@ -83,9 +83,9 @@ def validate_model_knn(data):
     print("Specificity = {:.4f}".format(specificity))
     print("Sensitivity = {:.4f}".format(sensitivity))
     print("Accuracy = {:.4f}".format(accuracy))
-    return accuracy, PPV
+    return accuracy, PPV, k
     
-def train_model_knn(data):
+def train_model_knn(data, k):
     """
     train_model trains the model using all of the data in the dataframe input. 
     It returns a trained model that make predictions using model.predict(X).
@@ -95,11 +95,6 @@ def train_model_knn(data):
     """       
     X = data.iloc[:-10, 1: -2]
     y = data.iloc[:-10, -1]
-    knn0 = KNN()
-    param_grid = {'n_neighbors': np.arange(1, 21)}
-    knn_gscv = GridSearchCV(knn0, param_grid, cv=10)
-    knn_gscv.fit(X, y)
-    k = int(knn_gscv.best_params_['n_neighbors'])
     model = KNN (n_neighbors = k)
     model.fit(X, y)
     return model
