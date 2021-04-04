@@ -4,17 +4,16 @@ def preprocess_data(data):
     """
     preprocess data prepares a pandas dataframe containing stock data from a CSV
     for analysis using a machine learning model. The pandas dataframe should have 5 
-    columns: Date, Close/Last, Volume, Open, High, and Low. The function will
-    change the 'Close/Last' column to 'Close', remove '$'s from the price data, 
-    convert the price data from floats to integers, and add 3 additional colummns:
+    columns: Date, Close, Volume, Open, High, and Low. The function will add 3 
+    additional colummns:
     TenDayChange: The change in stock price after 10 days, with respect to the 
                   current day.
     Direction:    The label (1 for a price increase, 0 otherwise)
     RelativeDate: An integer representing the date, with 0 representing the earliest 
                   date available.
-    ----------------------------------------------------------------------------
+    --------------------------------------------------------------------------
     :param data: a dataframe containing stock data
-    :return: None(the dataframe object is modified as per the description above)
+    :return: None (the dataframe object is modified as per the description above)
     """     
 
     # Convert date from a string to a datetime object   

@@ -1,7 +1,19 @@
 import numpy as np
 
+# ----------------------------------------------------------------------------
 def moving_average(data, span, feature):
-
+    """
+    moving average generates a moving average with length equal to span
+    using values from the desired feature (price, volume, etc.).
+    -> For volume use 'Volume'
+    -> For price use 'Close'
+    -> Other options available ('Open' / 'High' / 'Low' / etc.)
+    --------------------------------------------------------------------------
+    :param data: a dataframe containing stock data
+    :param predictions: the desired length for the moving avearge
+    :param ticker: e feature used to calculate the average (price of volume)
+    :return: Dataframe containing the information as described above
+    """    
     # Moving average will store the set of moving average values
     moving_average = []
     # Window stores the span of values that will be used to calculate the MA
@@ -18,13 +30,14 @@ def moving_average(data, span, feature):
             total = total - removed
             average = total / span
             moving_average.append(average)
-        # When span is first filled we do not need to remove anything
+        # When the window is first filled we do not need to remove anything
         elif (index >= span - 1):
             average = total / span
             moving_average.append(average)
         # Prior to the window being filled
         else:
-            moving_average.append(total / (i + 1)) # Should be "None, but causes model to fail
+            # Should be "None", but causes model to fail, so use average of values
+            moving_average.append(total / (i + 1)) 
     # Add a new column to the data frame, before target variable (can add multiple MAs)
     if (feature == 'Close'):
         metric = 'price'

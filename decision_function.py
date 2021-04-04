@@ -6,12 +6,12 @@ from sklearn.ensemble import RandomForestClassifier
 
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import KFold, cross_val_predict, GridSearchCV
-from sklearn.metrics import confusion_matrix
-import matplotlib.pyplot as plt
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
+# ----------------------------------------------------------------------------
 def validate_model(data, classifier):
     """
     validate_model_svm runs the DecisionTree Classifier 10-fold cross-validation and outputs
@@ -54,8 +54,9 @@ def validate_model(data, classifier):
     FP = cm[0, 1] # False Positives
     FN = cm[1, 0] # False Negatives
     n = len(X)   # Number of Samples
-    # Positive Predicted Value
-    PPV = TP / (TP + FP)
+    
+    # Precision
+    precision = TP / (TP + FP)
 
     # Negative Predicted Value
     NPV = TN / (TN + FN)
@@ -71,14 +72,14 @@ def validate_model(data, classifier):
 
     #print("Confusion Matrix:")
     print(cm)
-    print("PPV = {:.4f}".format(PPV))
+    print("Precision = {:.4f}".format(precision))
     print("NPV = {:.4f}".format(NPV))
     print("Specificity = {:.4f}".format(specificity))
     print("Sensitivity = {:.4f}".format(sensitivity))
     print("Accuracy = {:.4f}".format(accuracy))
-    return accuracy, PPV, k
+    return accuracy, precision, k
 
-
+# ----------------------------------------------------------------------------
 def train_model(data, classifier, k = 0):
     """
     train_model trains the model using all of the data in the dataframe input.
