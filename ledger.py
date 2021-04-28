@@ -71,7 +71,7 @@ def run_ledger(data, predictions, ticker):
     
     print("SIMULATION USING BEST MODEL")
     print("------------------------------------")    
-    print(transaction_history)
+    print(transaction_history.head(25))
     print(SEPERATOR)
     print("Stock Symbol: ", ticker.upper())
     print("Number of Transactions: ", len(transaction_history))
